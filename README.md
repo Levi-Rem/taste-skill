@@ -1,272 +1,321 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/taste-skill-wordmark-dark.png" />
-    <img src="assets/taste-skill-wordmark.png" alt="Taste Skill" width="340" />
-  </picture>
-</p>
+> **中文使用手册（本仓库主页）** · [English README](README.en.md)
 
-<p align="center">
-  <a href="https://tasteskill.dev" title="Visit tasteskill.dev"><img src="https://img.shields.io/badge/website-tasteskill.dev-24292f?style=flat" alt="Visit tasteskill.dev" /></a>
-  &nbsp;
-  <a href="https://tastecode.dev" title="Visit tastecode.dev"><img src="https://img.shields.io/badge/new-TasteCode-ff6b00?style=flat" alt="New: TasteCode" /></a>
-  &nbsp;
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-24292f?style=flat&amp;logo=github&amp;logoColor=white" alt="MIT License" /></a>
-  &nbsp;
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/changelog-view-24292f?style=flat" alt="Changelog" /></a>
-</p>
+# taste-skill（`design-taste-frontend`）使用手册 · DSH 版
 
-<p align="center">
-  <a href="https://tastecode.dev">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="assets/readme-tastecode-dark.webp" />
-      <img src="assets/readme-tastecode.webp" alt="TasteCode is here. Taste Skill as a desktop app, with a design agent built in. Free and open source. Download at tastecode.dev" width="100%" />
-    </picture>
-  </a>
-</p>
+> 仓库：https://github.com/Levi-Rem/taste-skill　技能名：`design-taste-frontend`　版本：tasteskill 2.5.1
+> 本手册对应已适配 DeepSeek Harness 的版本（提交 `4c034ac`）。
 
-<h3 align="center">Sponsors</h3>
+---
 
-<table align="center">
-  <tr>
-    <td align="center" width="104">
-      <a href="https://interfaces.dev/?utm_source=tasteskill&utm_medium=sponsorship">
-        <img src="assets/sponsors/interfaces-dev-icon.webp" alt="Interfaces" width="52" height="52" />
-      </a>
-    </td>
-    <td><sub><a href="https://interfaces.dev/?utm_source=tasteskill&utm_medium=sponsorship"><strong>interfaces.dev</strong></a> · A design engineering magazine by <a href="https://github.com/jakubkrehel"><strong>Jakub Krehel</strong></a></sub></td>
-  </tr>
-  <tr>
-    <td align="center" width="104">
-      <a href="https://reactbits.dev">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="assets/sponsors/reactbits-icon-dark.svg" />
-          <img src="assets/sponsors/reactbits-icon-light.svg" alt="React Bits" width="52" height="52" />
-        </picture>
-      </a>
-    </td>
-    <td><sub><a href="https://reactbits.dev"><strong>React Bits</strong></a> · animated React components for creative interfaces</sub></td>
-  </tr>
-  <tr>
-    <td align="center" width="104"><a href="https://img.ly/"><img src="assets/sponsors/imgly-logo.svg" alt="IMG.LY" width="52" height="52" /></a></td>
-    <td><sub><a href="https://img.ly/"><strong>IMG.LY</strong></a> · CreativeEditor SDK</sub></td>
-  </tr>
-  <tr>
-    <td align="center" width="104"><a href="https://www.sent.dm"><img src="assets/sponsors/sentdm.png" alt="Sent.dm" width="52" height="52" /></a></td>
-    <td><sub><a href="https://www.sent.dm"><strong>Sent.dm</strong></a> · messaging APIs for SMS, WhatsApp, and RCS</sub></td>
-  </tr>
-</table>
+## 1. 它是什么
 
-<p align="center"><sub><a href="https://github.com/sponsors/Leonxlnx">Become a sponsor</a></sub></p>
+一套"反 AI 味"的网页设计技能：给编码代理一份完整的设计系统 + 素材库 + 浏览器检查器 + 收尾门（finish gate）。
 
-**Taste Skill** (`tasteskill 2.5.1`) is an Agent Skill that makes coding agents build professional company websites at the `figma.com` and `x.ai` level instead of assembling a generic landing page. Every build uses plain copy, one design system, one section per screen, equal left and right edges, real photographs (licensed stand-ins when the client has none), real brand icons and real product UI, a hero entrance and one or two dealt moments on every page, quiet micro-interactions, and shader effects and scroll scenes kept strictly for tech, gaming and software pages, all verified in a real browser by a checker and a finish gate that enforce the rules.
+- **输入**：一句业务描述（卖什么、卖给谁、主行动是什么）。
+- **输出**：一个像 figma.com / x.ai 那种水准的公司站/落地页，以及一份带 `GATE:` 结论的报告。
+- **组成**：`SKILL.md`（规则与流程）+ 22 份 `references/`（各素材族的用法）+ `scripts/`（发牌、检查、gate）+ `assets/`（1594 个文件：照片、图标、UI 片段、效果、场景、动效）。
 
-Pages built from a single brief in earlier v2 runs:
+**它不是** DSH 插件，不能用 `plugin_manager install_bundle` 安装。它在 DSH 里就是一个普通 skill 目录，靠技能目录自动匹配或 `/design-taste-frontend` 显式加载。
 
-<table>
-  <tr>
-    <td width="50%"><img src="examples/v2/coffee-storefront.webp" alt="Coffee shop page with a drawn storefront as its hero" /></td>
-    <td width="50%"><img src="examples/v2/night-dates.webp" alt="Techno night page with its dates set into an archive photograph" /></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="examples/v2/coffee-roast.webp" alt="Coffee shop page section showing the roast in four photographs" /></td>
-    <td width="50%"><img src="examples/v2/coffee-questions.webp" alt="Coffee shop page questions as stacked index cards" /></td>
-  </tr>
-</table>
+适用：公司站、SaaS 首页、产品页、游戏官网、工作室站、咖啡馆/民宿/小店、活动页。
+不适用：后台管理系统的表单页、纯文档站、需要真实后端交互的应用。
 
-The photographs are real, found in open archives and credited by the skill ([credits](examples/v2/CREDITS.md)). Watch the [launch film](https://github.com/Leonxlnx/taste-skill/releases/tag/v2.0.0).
+---
 
-## Install
+## 2. 安装
+
+### 2.1 三种方式（任选）
 
 ```bash
-npx skills add https://github.com/Leonxlnx/taste-skill --skill "design-taste-frontend"
-```
+git clone https://github.com/Levi-Rem/taste-skill.git
+cd taste-skill
 
-That installs the skill with the [`npx skills`](https://github.com/vercel-labs/agent-skills) CLI.
+# A. 用户级：装到 ~/.dsh/skills/design-taste-frontend（所有项目可用）
+node install.mjs --dsh
 
-The skill runs its scripts with **Node 22+** and an installed **Chrome, Edge or Chromium** (set `CHROME_PATH` if it is in a non-standard place). Optional: **ffmpeg** on the PATH, for WebP output and the phone crop of a hero photograph in `photos.mjs`. It installs nothing and needs no API keys. Bundled Wikimedia Commons photographs work offline; fetching additional photographs or icons uses network access.
+# B. 项目级：装到 <git 仓库根>/.dsh/skills/design-taste-frontend（只对当前项目生效）
+node install.mjs --dsh --project
 
-<details>
-<summary>Claude Code plugin</summary>
-
-Run these inside Claude Code. The skill is namespaced under `taste-skill:`, so it does not collide with your other skills.
-
-```
-/plugin marketplace add Leonxlnx/taste-skill
-/plugin install taste-skill@taste-skill
-```
-
-`/plugin update` upgrades it later.
-
-</details>
-
-<details>
-<summary>Codex plugin</summary>
-
-```bash
-codex plugin marketplace add Leonxlnx/taste-skill
-codex plugin add taste-skill@taste-skill
-```
-
-Start a new Codex session afterwards so the skill is loaded.
-
-</details>
-
-<details>
-<summary>DeepSeek Harness (DSH)</summary>
-
-DSH scans skill roots one level deep. Install the skill into one of them:
-
-- **User level** (every project): `$DSH_HOME/skills/design-taste-frontend/`, which is
-  `~/.dsh/skills/design-taste-frontend/` when `DSH_HOME` is unset.
-- **Project level** (one repository): `<git root>/.dsh/skills/design-taste-frontend/`.
-
-From a clone, `node install.mjs --dsh` installs at user level and `node install.mjs --dsh --project` at
-project level; `./install.sh --dsh` does the same (it copies through `install.mjs`). Or copy the folder
-by hand:
-
-```bash
+# C. 手工复制（不需要 Node 也能装）
 mkdir -p ~/.dsh/skills
 cp -R skills/taste-skill ~/.dsh/skills/design-taste-frontend
 ```
 
-DSH lists the skill in its catalog, so ask the agent for a landing page or invoke it directly as
-`/design-taste-frontend`. No restart is needed (the body is re-read on every load); refresh the skill
-list if the new entry is not shown yet. DSH has no stop hook: run the finishing gate yourself with
-`node <skill>/scripts/gate.mjs <page>`. Discovery rules, the load result, differences and
-troubleshooting are in [DSH.md](DSH.md).
+`./install.sh --dsh` 等价于 A（bash 入口，内部调用 install.mjs）。
 
-</details>
+### 2.2 路径规则（装错地方最常见）
 
-<details>
-<summary>From a clone, linked instead of copied</summary>
+DSH 只在**固定几层**里找 skill，按优先级：
 
-`./install.sh` symlinks the skill into Claude Code (`--codex` for Codex, `--all-agents` for both), so a `git pull` updates it in place. On Windows (Git Bash) it makes a real link, or a directory junction when symlinks are not allowed, and it reports an older copied folder instead of skipping it silently.
+| 优先级 | 位置 | 说明 |
+|---|---|---|
+| 100 | `<项目根>/.dsh/skills/` | 项目级，最优先 |
+| 200 | `<项目根>/.agents/skills/` | 项目级 |
+| 300 | `Config.customSkillDirs` | 自定义目录 |
+| 400 | `~/.dsh/skills/` | **用户级（推荐）** |
+| 500 | `~/.agents/skills/` | 用户级 |
+| 600 | `DSH_BUNDLED_SKILL_DIR` | 内置 |
 
-</details>
+- `<项目根>` = 最近的含 `.git` 的祖先目录，没有 `.git` 就用当前目录。
+- **只扫一层**：必须是 `~/.dsh/skills/design-taste-frontend/SKILL.md`。把仓库整个丢进 `skills/` 会找不到。
+- 同名 skill 前一个优先；目录名要与 frontmatter 的 `name` 一致才算干净。
 
-Already have the skill? Run the install command again; the install name did not change. Looking for one of the older skills? See [Moved skills](#moved-skills).
-
-## How 2.5 works
-
-Use it by asking your agent to build or redesign a company site; the agent loads the skill, copies `assets/` into the project, starts from `assets/starter.html` and runs the checker before it hands the page over. Every build starts by classifying the client's business (`software`, `gaming`, `tech`, `product`, `service` or `place`) and planning the page screen by screen before writing markup:
-
-1. **Deal tokens and layout.** `scripts/start.mjs` deals a palette made for the trade and a Google Fonts pairing for the page kind (`library/palettes.json`, `library/type.json`), and `assets/layout/deal.mjs` deals a hero layout (`split`, `centred`, `product`, `photo`, `place`, `collage`, `editorial`, `word`, `film`, `statement` or `triptych`).
-2. **Start from one system.** `assets/starter.html`, `assets/system.css` and `assets/layout/layout.css` enforce one section per screen at desktop (`1440x900`), equal left and right content edges, a fixed navigation bar and a single-screen closing footer (`footer.closing`).
-3. **Show real product UI and real photographs.** Software and tech pages populate lit feature cards (`assets/ui/cards.css`) with rewritten HTML UI fragments (`assets/ui/`) and node-and-line diagrams (`assets/diagrams/`), with real brand and interface SVGs resolved locally by `scripts/icons.mjs`. Place, shop, hospitality and non-technical product pages lead with curated photographs (`scripts/photos.mjs`, `assets/photos/`), typography and flat colour, crediting sources in one expandable footer line with no captions under images.
-4. **Keep effects for tech and gaming pages.** Shader grounds (`scripts/effects.mjs`), scroll scenes (`assets/scenes/`) and procedural 3D prints (`assets/objects/`) are dealt only on `software`, `tech` and `gaming` pages within a four-context WebGL cap, with static fallbacks for phones and reduced motion. Every page gets a hero entrance and one or two moments from `scripts/moments.mjs`; cafes, hotels, shops, studios and services get only the photo- and type-led ones, and zero WebGL.
-5. **Check in a real browser over HTTP.** `scripts/consistency.mjs`, `assets/layout/check.mjs`, `scripts/perf.mjs` and `scripts/shoot.mjs` render the built page in headless Chrome across `1440`, `1024`, `768` and `390`, catching empty visuals, broken shaders, contrast drops, misaligned columns, section-height drift, placeholder text, invented street numbers and slow-network image gaps before the build ships. `scripts/gate.mjs` then holds the finish until no fixable FAIL is left, three rounds at most.
-
-Details of what changed from `2.1.x` are in the [changelog](CHANGELOG.md).
-
-## The tools
-
-Everything is a plain Node 22+ script in the skill folder; none installs anything.
-
-| Tool | What it does |
-| --- | --- |
-| `scripts/start.mjs` | Deals a palette and a Google Fonts pairing for the page kind and prints the `<head>` links and `:root` tokens. |
-| `assets/layout/deal.mjs` | Deals one of eleven tested hero layouts; `assets/layout/check.mjs` checks it with long-headline stress tests. |
-| `scripts/photos.mjs` | Deals vetted photographs by trade, enforces image weight and writes the one footer credit line. |
-| `scripts/icons.mjs` | Resolves real brand and interface icons into local SVG files. |
-| `scripts/effects.mjs`, `scripts/moments.mjs` | Deal shader grounds for tech, gaming and software pages, and the moments for every kind. |
-| `scripts/gate.mjs`, `scripts/copy-lint.mjs` | The finish gate (also a Stop hook in Claude Code; Codex needs the `.codex/hooks.json` entry in `references/gate.md`) and the copy linter it runs. |
-| `scripts/consistency.mjs` | The checker: renders the page in headless Chrome over HTTP at `1440`, `1024`, `820`, `768` and `390` and prints PASS, WARN or FAIL per rule. |
-| `scripts/perf.mjs`, `scripts/shoot.mjs` | Page weight and speed, and full-page and per-section screenshots. |
-
-First run, from the project folder (a deal also arms the finish gate there): `node scripts/start.mjs deal --page software` (kinds: `software`, `gaming`, `tech`, `product`, `service`, `place`). Check a built page with `node scripts/consistency.mjs <url or file> --page <kind>`.
-
-## Moved skills
-
-This repo holds one skill, `design-taste-frontend`. The others moved to repos of their own and kept their install names:
-
-| Install name | Where it lives now |
-| --- | --- |
-| `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `gpt-taste`, `stitch-design-taste`, `design-taste-frontend-v1`, `design-taste-frontend-v2-experimental` | **[Leonxlnx/taste-skill-classics](https://github.com/Leonxlnx/taste-skill-classics)** |
-| `imagegen-frontend-web`, `imagegen-frontend-mobile`, `brandkit`, `image-to-code` | **[Leonxlnx/imagegen-skills](https://github.com/Leonxlnx/imagegen-skills)** |
-| `redesign-existing-projects` | Part of `design-taste-frontend`, which audits an existing page in a real browser before changing anything |
-| `full-output-enforcement` | Removed. For the same problem, see **[Leonxlnx/unlazy](https://github.com/Leonxlnx/unlazy)** |
-
-Install a moved skill from its new repo under the same name:
+### 2.3 验证
 
 ```bash
-npx skills add https://github.com/Leonxlnx/taste-skill-classics --skill "high-end-visual-design"
+node install.mjs --list
 ```
 
-## Common Questions
+```
+dsh    user   C:\Users\LUO Lin\.dsh\skills  [installed]
+```
 
-**What does the skill need?**  
-Node 22 or newer and Chrome, Edge or Chromium; ffmpeg is optional (WebP photographs and the phone crop of a hero photograph). It installs nothing and uses no API keys. Bundled Commons photographs are stored locally; network access is used only when downloading additional photographs, Google Fonts or brand icons.
+装完**不用重启**，本轮会话的技能目录就会刷新（这一项已在 DSH 上实测）。当前状态：
 
-**Where do the pictures come from, and can I use them?**  
-From the skill's vetted photograph library (`assets/photos/photos.json`, including bundled Wikimedia Commons WebP sets and Unsplash photographs) dealt by `scripts/photos.mjs`. Library frames are used for trade and material details (or marked explicitly as draft stand-ins when the client has no photographs yet), never passed off as the client's own room, staff or product, and credited in one expandable footer line (`photos.mjs credits`).
+```
+~/.dsh/skills/design-taste-frontend/   1631 个文件
+~/.dsh/skills/grill-me/                其他技能
+```
 
-**Does it work with React, Vue, Svelte, plain HTML?**  
-An empty folder gets a static page from `assets/starter.html`. An existing React, Vue, Svelte, Astro or Tailwind project is built in its own stack, with the kit served from its public folder; a Next.js brief is built as a static export. The browser checks run on the served or built page.
+### 2.4 卸载 / 升级
 
-**When does a page get shaders or scroll effects?**  
-Shaders only on `software`, `tech` (technical hardware) and `gaming` pages, and always within a four-context WebGL budget with static phone and reduced-motion fallbacks. Places, shops, cafes, hotels, studios, services and everyday physical products stay calm: photographs, sharp typography and flat colour, with a hero entrance and one or two photo- or type-led moments in their own sections.
+```bash
+node install.mjs --dsh --uninstall     # 只删它自己装的那个目录和标记文件
+node install.mjs --dsh --force         # 目录已存在且不是它装的时，强制覆盖
+```
 
-## Support the project
+升级 = `git pull` 后重新 `node install.mjs --dsh`（先写临时目录再原子替换，中途失败不会留半套）。
 
-If Taste Skill helps you, consider sponsoring:
+---
 
-[Sponsor on GitHub](https://github.com/sponsors/Leonxlnx)
+## 3. DSH 与 Claude Code 的差异（必读）
 
-### Open Source Supporters
+| 项目 | Claude Code / Codex | DSH |
+|---|---|---|
+| 自动收尾 gate | `hooks: Stop` 自动跑 | **没有 hook**，要手动跑 `node <skill>/scripts/gate.mjs <page>` |
+| skill 路径变量 | `${CLAUDE_SKILL_DIR}` | 加载结果会打印 `Base directory for this skill: <path>`，用它当 `<skill>` |
+| frontmatter 未知键 | 报错或忽略 | 只认 `name`/`description`/`whenToUse`/`metadata`/`disable-model-invocation`/`user-invocable`，**其它键静默忽略**（`hooks:` 就是这样保留下来给 CC/Codex 用的） |
+| 旧式驼峰键 | — | `disableModelInvocation` 等会让 DSH **丢弃整个 skill**，必须用 kebab-case |
+| 目录描述长度 | 不限 | catalog 只保留 **前 500 字符**（当前描述 497） |
 
-<table align="center">
-  <tr>
-    <td align="center" width="104"><a href="https://www.kimi.com"><img src="assets/sponsors/kimi-icon.png" alt="Kimi" width="52" height="52" /></a></td>
-    <td><a href="https://www.kimi.com"><picture><source media="(prefers-color-scheme: dark)" srcset="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/1/2026-06-05/1d8h69mt3v89kkekg24gg" /><img alt="Kimi Open Source Friends" src="https://kimi-file.moonshot.cn/prod-chat-kimi/kfs/4/1/2026-06-05/1d8h69fudcmosb3pipls0" height="42" /></picture></a><br /><sub><a href="https://platform.kimi.ai?track_id=track-20f0d64bcaba419bb425a3e8c306f65d&aff=taste-skill"><strong>Get a Kimi API key</strong></a>: taste-skill users get 10% bonus API credits on their first purchase.</sub></td>
-  </tr>
-  <tr>
-    <td align="center" width="104"><a href="https://vercel.com/open-source-program"><img src="assets/sponsors/vercel-logo.svg" alt="Vercel" width="52" height="52" /></a></td>
-    <td><a href="https://vercel.com/open-source-program"><img src="assets/vercel-oss-program-badge.svg" alt="Vercel Open Source Program" height="28" /></a></td>
-  </tr>
-</table>
+`hooks:` 键我特意保留了：DSH 忽略它，Claude Code/Codex 上仍有自动收尾。
 
-### Community Sponsors
+---
 
-<p>
-<a href="https://github.com/dnakov"><img src="https://github.com/dnakov.png" width="40" height="40" style="border-radius:50%" alt="dnakov" title="dnakov" /></a>
-<a href="https://github.com/AkramReshad"><img src="https://github.com/AkramReshad.png" width="40" height="40" style="border-radius:50%" alt="AkramReshad" title="AkramReshad" /></a>
-<a href="https://github.com/ajmalaksar25"><img src="https://github.com/ajmalaksar25.png" width="40" height="40" style="border-radius:50%" alt="ajmalaksar25" title="ajmalaksar25" /></a>
-<a href="https://github.com/krikkkk"><img src="https://github.com/krikkkk.png" width="40" height="40" style="border-radius:50%" alt="krikkkk" title="krikkkk" /></a>
-<a href="https://github.com/navanchauhan"><img src="https://github.com/navanchauhan.png" width="40" height="40" style="border-radius:50%" alt="navanchauhan" title="navanchauhan" /></a>
-<a href="https://github.com/robinebers"><img src="https://github.com/robinebers.png" width="40" height="40" style="border-radius:50%" alt="robinebers" title="robinebers" /></a>
-<a href="https://github.com/JKc66"><img src="https://github.com/JKc66.png" width="40" height="40" style="border-radius:50%" alt="JKc66" title="JKc66" /></a>
-<a href="https://github.com/u2393696078-rgb"><img src="https://github.com/u2393696078-rgb.png" width="40" height="40" style="border-radius:50%" alt="u2393696078-rgb" title="u2393696078-rgb" /></a>
-<a href="https://github.com/a-human-created-this"><img src="https://github.com/a-human-created-this.png" width="40" height="40" style="border-radius:50%" alt="a-human-created-this" title="a-human-created-this" /></a>
-<a href="https://github.com/AtharvaJaiswal005"><img src="https://github.com/AtharvaJaiswal005.png" width="40" height="40" style="border-radius:50%" alt="AtharvaJaiswal005" title="AtharvaJaiswal005" /></a>
-<a href="https://github.com/ghughes7"><img src="https://github.com/ghughes7.png" width="40" height="40" style="border-radius:50%" alt="ghughes7" title="ghughes7" /></a>
-<a href="https://github.com/mccun934"><img src="https://github.com/mccun934.png" width="40" height="40" style="border-radius:50%" alt="mccun934" title="mccun934" /></a>
-<a href="https://github.com/techmedic5"><img src="https://github.com/techmedic5.png" width="40" height="40" style="border-radius:50%" alt="techmedic5" title="techmedic5" /></a>
-<a href="https://github.com/bytewerk-dev"><img src="https://github.com/bytewerk-dev.png" width="40" height="40" style="border-radius:50%" alt="bytewerk-dev" title="bytewerk-dev" /></a>
-<a href="https://github.com/LuisGot"><img src="https://github.com/LuisGot.png" width="40" height="40" style="border-radius:50%" alt="LuisGot" title="LuisGot" /></a>
-<a href="https://github.com/oskar-collab"><img src="https://github.com/oskar-collab.png" width="40" height="40" style="border-radius:50%" alt="oskar-collab" title="oskar-collab" /></a>
-<a href="https://github.com/denvit"><img src="https://github.com/denvit.png" width="40" height="40" style="border-radius:50%" alt="denvit" title="denvit" /></a>
-<a href="https://github.com/onedollarstock"><img src="https://github.com/onedollarstock.png" width="40" height="40" style="border-radius:50%" alt="onedollarstock" title="onedollarstock" /></a>
-<a href="https://github.com/KANA-33"><img src="https://github.com/KANA-33.png" width="40" height="40" style="border-radius:50%" alt="KANA-33" title="KANA-33" /></a>
-<a href="https://github.com/emilkowalski"><img src="https://github.com/emilkowalski.png" width="40" height="40" style="border-radius:50%" alt="emilkowalski" title="emilkowalski" /></a>
-<a href="https://github.com/AnthonyLiuVa"><img src="https://github.com/AnthonyLiuVa.png" width="40" height="40" style="border-radius:50%" alt="AnthonyLiuVa" title="AnthonyLiuVa" /></a>
-<a href="https://github.com/Wolfy18"><img src="https://github.com/Wolfy18.png" width="40" height="40" style="border-radius:50%" alt="Wolfy18" title="Wolfy18" /></a>
-<a href="https://github.com/Gigslol"><img src="https://github.com/Gigslol.png" width="40" height="40" style="border-radius:50%" alt="Gigslol" title="Gigslol" /></a>
-</p>
+## 4. 五分钟跑通
 
-<p align="center">
- <a href="https://www.star-history.com/leonxlnx/taste-skill">
-  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=Leonxlnx/taste-skill&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=Leonxlnx/taste-skill" />
-   <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=Leonxlnx/taste-skill" />
-  </picture>
- </a>
-</p>
+前提：Node 22+、Chrome/Edge/Chromium 之一；一个空目录（或在你的项目里）。
 
-<sub>Feedback: open an issue or pull request, DM [@lexnlin](https://x.com/lexnlin) or [@blueemi99](https://x.com/blueemi99), or email [hello@tasteskill.dev](mailto:hello@tasteskill.dev).</sub>
+```bash
+# 0. 进你的项目目录
+cd ~/projects/my-site
 
-<sub>Taste Skill has no official token, coin, or crypto project. Any token using my name, image, or project is unaffiliated and not endorsed by me.</sub>
+# 1. 把技能素材拷进来，从 starter 起步
+cp -R "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\assets" ./assets
 
-## License
+# 2. 上锁：在任何页面存在之前先开 build（记住 category 写"卖什么"，primary 写"主行动"）
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\gate.mjs" \
+  --start index.html --kind software \
+  --category "shared inbox for small support teams" \
+  --primary "Start a 14-day trial"
 
-[MIT License](LICENSE) · Copyright (c) 2026 Leonxlnx
+# 3. 发牌（不要凭手感选配色/字体/版式）
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\assets\layout\deal.mjs" \
+  --type software --has photo,ui --history .taste-skill/layout-history.json
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\start.mjs" \
+  deal --page software --trade saas --history .taste-skill/history.json
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\start.mjs" \
+  css --page software --palette <id> --type <id> --radius soft      # 打印 :root，原样贴进页面
+
+# 4. 写页面（基于 assets/starter.html 与 assets/layout/hero-<id>.html）
+
+# 5. 检查
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\copy-lint.mjs" index.html --kind software
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\consistency.mjs" index.html \
+  --widths 1440,1024,820,768,390 --rhythm-widths 1440,820,768,390 \
+  --profile .taste-skill/chrome-check --page software \
+  --category "shared inbox for small support teams" --primary "Start a 14-day trial"
+
+# 6. 收尾门（直到最后一行是 GATE: PASS 或 GATE: OPEN，最多 3 轮）
+node "C:\Users\LUO Lin\.dsh\skills\design-taste-frontend\scripts\gate.mjs" index.html
+```
+
+在 DSH 里更省事的写法：让代理先加载技能，然后说「用 design-taste-frontend 给我做一个 XX 公司的官网，主行动是 XX」。代理会自己跑完上面这一串，并用 Base directory 拼出脚本路径。
+
+---
+
+## 5. 完整流程（技能规定的 7 步）
+
+### 第 0 步：判断项目形态
+
+- **空目录** → 静态页：把 `<skill>/assets` 拷成 `./assets`，从 `assets/starter.html` 开始。
+- **已有项目（React/Next/Vue/Svelte/Astro/Tailwind）** → 在它自己的技术栈里写，把 kit 拷到 `public/assets` 当普通文件加载。
+- **Next.js** → 静态导出（`output: 'export'`），检查构建产物（`--root out`）。
+
+### 第 1 步：读 brief，先上锁
+
+先写下四件事：**kind**（见下表）、卖什么、谁买、**唯一主行动**（Book a room / Order a cake / Start a free trial；没有交易的 place 用 Get directions）。
+
+然后 `gate.mjs --start …` 开一个 build。它是"先立契约再施工"，后面所有检查都以这个 build 为上下文。
+
+**kind 判定表**
+
+| brief | page type | site-kind | `--kind` |
+|---|---|---|---|
+| App、SaaS、AI、开发者工具、金融应用 | software | software | software |
+| 游戏、工作室发游戏 | software | gaming | gaming |
+| 硬件/科技设备（无人机、机械臂、键盘） | product | tech | tech |
+| 其它实物或品牌（椅子、自行车、咖啡豆） | product | other | product |
+| 招人来的：诊所、律所、代理公司、创意工作室 | service | other | service |
+| 人来店的：咖啡馆、面包房、餐厅、民宿、小店、健身房 | place | other | place |
+
+自己动手、也卖货的（陶艺工作室、带网店的面包房）算 **place**，网店部分是其中的 goods 区块。
+
+### 第 2 步：先写文案，再动页面
+
+按 `copy-voice.md` 建事实表与声音卡：h1 要点明品类与买家/地点；首屏至少一条硬事实；每个标题有名词；按钮 = 动词 + 宾语。除了杜撰的品牌名（先搜索，结果存 `names.json`）和 place 的营业时间/价格（标记 `data-assumed`），**不许编**。
+
+### 第 3 步：把页面拆成"屏"
+
+计划第一行写 kind，第二行写发牌结果（palette 及为什么符合这个行业），然后每屏一行：区块 id、一句话主张、配图类型、占几屏、哪一屏放 moment（tech 还要写效果或场景）。**一屏一个 section**，hero 独占首屏。
+
+### 第 4 步：发牌，不靠手感
+
+```bash
+node <skill>/assets/layout/deal.mjs --type <page type> --has <photo,ui,film,object,setting> \
+  --history .taste-skill/layout-history.json
+node <skill>/scripts/start.mjs deal --page <kind> --trade <trade> --history .taste-skill/history.json
+node <skill>/scripts/start.mjs css  --page <kind> --palette <id> --type <id> --radius soft
+node <skill>/scripts/start.mjs brand --page place --bg "#.." --ink "#.." --accent "#.." --type <id>
+node <skill>/scripts/moments.mjs pick --page <kind> --count 1|2 --fits section,statement --photo
+```
+
+规则：取**第一条** palette 与第一组搭配（除非与客户 logo/照片冲突）；客户有自己的颜色走 `brand`；**永远不用紫罗兰色**；radius：金融/开发者工具 `sharp`，默认 `soft`，消费应用 `round`，place 用直角。
+
+### 第 5 步：搭建
+
+在 `starter.html` 上设置 `<html lang data-type data-radius data-buttons data-motion>`、三个 meta、head 块、nav class；只从 `assets/layout/hero-<id>.html` 拷 hero 那一段；每个 section 是 `main > section` + 一个 `.wrap` + h2 打头。UI 片段从 `assets/ui/<name>/fragment.html` 取，把名字/数字/logo 换成客户的；图标最后跑 `icons.mjs scan`。
+
+### 第 6 步：检查与"看"
+
+只用技能自带脚本，一次一个、前台跑（它们自己起无头 Chrome，10 分钟超时，跑完按 PID 关掉）。**不要**用浏览器工具、不要后台跑。
+
+```bash
+node <skill>/scripts/copy-lint.mjs index.html --kind <kind>          # 不开浏览器，秒出
+node <skill>/scripts/consistency.mjs index.html --widths 1440,1024,820,768,390 \
+  --rhythm-widths 1440,820,768,390 --profile .taste-skill/chrome-check \
+  --page <kind> --category "…" --primary "…"
+node <skill>/assets/layout/check.mjs --url index.html --profile .taste-skill/chrome-check \
+  --sizes 1440x900,1024x768,820x1180,768x1024,390x844 --shots shots/layout
+node <skill>/scripts/shoot.mjs --url index.html --w 1440 --out shots/1440.png --profile .taste-skill/chrome-check
+node <skill>/scripts/perf.mjs index.html --profile .taste-skill/chrome-check
+node <skill>/scripts/gate.mjs index.html                              # 收尾门
+```
+
+修完重跑，直到 `GATE: PASS` 或 `GATE: OPEN`（最多 3 轮）。每次都得看截图，不要只看 JSON。
+
+### 第 7 步：报告
+
+`GATE:` 行放最前；然后列：waiver 及理由、未解决的 FAIL、kind 与发牌结果、声音卡一句话、检查器/版式/性能结果、没能检查的项、所有假设事实、素材缺口与客户槽位。
+
+---
+
+## 6. gate 结果怎么读
+
+| 末行 | 含义 | 怎么办 |
+|---|---|---|
+| `GATE: PASS` | 全过 | 交付 |
+| `GATE: OPEN` | 还有未解决项（有 waiver 或超轮次） | 在报告里列出 |
+| `GATE: OFF` | 当前目录没有 active build | 先 `--start` |
+| `GATE: SETUP` | 没有可打开的页面（还是框架源码壳/非本地页） | 按第 1 步给个能打开的页面再跑 |
+| `GATE: ERROR` | 检查跑不起来（多半是浏览器/端口问题） | 证据写进报告，别反复重跑 |
+| `GATE: DONE` | 用户叫停、按现状交付 | 报告里列 open FAIL |
+| `GATE: FAIL n (round k of 3)` | 第 k 轮，n 个失败 | 按列表修，再跑 |
+
+- 判定为误报的 FAIL 写进 `.taste-skill/waivers.json` 并写理由，**不许改检查器**。
+- 不许改 `assets/`、`scripts/` 里的 kit 文件来"消掉"检查——这是技能明令禁止的。
+- build 状态存在项目里的 `.taste-skill/build.json`，与技能目录无关。
+
+---
+
+## 7. 常见问题
+
+**Q：为什么 `plugin_manager install_bundle` 找不到它？**
+它不是插件，没有 bundle manifest；DSH 的 skill 只靠目录扫描。装到 `~/.dsh/skills/design-taste-frontend/` 即可。
+
+**Q：装好但技能列表里看不到？**
+① 检查是不是多套了一层（必须 `.../design-taste-frontend/SKILL.md`）；② 目录名与 `name` 不一致时可能被判重名；③ 换了工作区/项目时项目级路径变了；④ 描述超过 500 字符会被截断（仍会显示，只是不完整）。
+
+**Q：为什么它不自己跑最后的 gate？**
+DSH 没有 stop hook。手动 `node <skill>/scripts/gate.mjs <page>`，或让代理在收尾时跑。
+
+**Q：能装在项目里而不是用户目录吗？**
+能：`node install.mjs --dsh --project`，落到 `<git 根>/.dsh/skills/`。适合"这个站专用"的设计系统，也方便跟仓库一起走。
+
+**Q：需要联网/API key 吗？**
+不需要。脚本零依赖、离线可跑；照片是本地素材库 + 可选实况搜索。
+
+**Q：在 Windows 上稳吗？**
+已实测：Node 24 + Chrome 全链路（发牌、consistency、check、gate、截图）通过。若你只有 Edge，检查器会回退到 Edge（`CHROME_PATH` 可显式指定浏览器）。
+
+**Q：可以把 `assets/` 放进已有 React 项目吗？**
+可以，放 `public/assets`，按普通静态文件引用；页面在项目自己的组件里写。
+
+**Q：技能描述能改吗？**
+能，但文件名/name 与目录名要保持一致，description 别超过 500 字符（当前 497，余量很小）。
+
+---
+
+## 8. 目录速览
+
+```
+taste-skill/
+├── install.mjs              安装器（零依赖，Node 18+）
+├── install.sh               bash 入口，--dsh 委托给 install.mjs
+├── DSH.md                   DSH 安装/差异/排错（英文）
+├── skills/taste-skill/
+│   ├── SKILL.md             规则 + 7 步流程（395 行）
+│   ├── references/          22 份：sections、layout-v4、copy*、photos、motion…
+│   ├── scripts/             gate / consistency / copy-lint / photos / icons / shoot / perf…
+│   ├── library/             palettes.json、type.json（发牌数据）
+│   └── assets/              1594 个文件：照片、图标、UI 片段、效果、场景、hero、moment
+├── tests/                   dsh-compat.mjs（DSH 契约测试）+ frontmatter / kit-clean / encoding
+└── package.json             npm test
+```
+
+深入阅读顺序：`SKILL.md` → `references/sections.md` → `references/layout-v4.md` → `references/copy.md` → 按页面用到的素材族看对应 reference。
+
+---
+
+## 9. 一页速查
+
+```bash
+# 安装 / 查看 / 卸载
+node install.mjs --dsh
+node install.mjs --list
+node install.mjs --dsh --uninstall
+
+# 开 build（先锁契约）
+node <skill>/scripts/gate.mjs --start index.html --kind <kind> --category "<卖什么>" --primary "<主行动>"
+
+# 发牌
+node <skill>/assets/layout/deal.mjs --type <page type> --has <photo,ui,film,object,setting>
+node <skill>/scripts/start.mjs deal --page <kind> --trade <trade>
+node <skill>/scripts/start.mjs css --page <kind> --palette <id> --type <id> --radius soft
+node <skill>/scripts/moments.mjs pick --page <kind> --count 1|2 --fits section,statement
+
+# 检查
+node <skill>/scripts/copy-lint.mjs index.html --kind <kind>
+node <skill>/scripts/consistency.mjs index.html --widths 1440,1024,820,768,390 --profile .taste-skill/chrome-check --page <kind> --category "…" --primary "…"
+node <skill>/assets/layout/check.mjs --url index.html --sizes 1440x900,1024x768,820x1180,768x1024,390x844
+node <skill>/scripts/shoot.mjs --url index.html --w 1440 --out shots/1440.png
+node <skill>/scripts/perf.mjs index.html
+
+# 收尾
+node <skill>/scripts/gate.mjs index.html
+node <skill>/scripts/gate.mjs --done "<用户原话>"
+```
+
+`<skill>` = 技能加载时打印的 `Base directory for this skill:` 路径，本机为
+`C:\Users\LUO Lin\.dsh\skills\design-taste-frontend`。
+
