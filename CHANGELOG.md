@@ -4,6 +4,16 @@ All notable changes to taste-skill live here. The repo follows SemVer-ish discip
 
 ---
 
+## Unreleased
+
+DeepSeek Harness (DSH) support. The build pipeline steps are unchanged; Claude Code and Codex installs keep working.
+
+- **DSH host:** `SKILL.md` gains a `## DSH` section (skills roots, loading through the catalog or `/design-taste-frontend`, no stop hook, the manual `node <skill>/scripts/gate.mjs <page>` finish) and the `<skill>` definition notes that DSH prints `Base directory for this skill: <path>`. `README.md` gains a DSH install block and `DSH.md` documents discovery, the load result, differences and troubleshooting.
+- **Frontmatter:** the description is rewritten to fit DSH's 500-character catalog cap while keeping the trigger vocabulary (kinds of site and "looks generic, templated or AI-made"); `name: design-taste-frontend` and the Claude Code / Codex `hooks:` block are unchanged (DSH ignores frontmatter keys it does not read, so the block costs nothing there; the legacy camelCase `disableModelInvocation`, `modelInvocable` and `userInvocable` are the exception — DSH rejects them and drops the skill, and none is used here).
+- **References:** `references/gate.md` opens its hook chapter with "DSH has no skill hooks, so this chapter does not apply there" and keeps the Claude Code, Codex and Antigravity hook configs unchanged. No reference file is added or removed.
+- **Checkers:** `assets/layout/check.mjs` falls back to Edge or Chromium when Chrome is absent (Windows `msedge.exe`, macOS `Microsoft Edge`, `/usr/bin/chromium-browser`, `/usr/bin/microsoft-edge`), matching `consistency.mjs` and the "Chrome, Edge or Chromium" requirement in `SKILL.md`; its error text now names all three.
+- **Installers:** `install.mjs` and `install.sh` gain `--dsh` (user level, `$DSH_HOME/skills`) and `--project` (the git root's `.dsh/skills`), and `install.mjs --uninstall` removes only what it installed.
+
 ## 2.5.1 - 2026-11-07
 
 What a 44-site test of `2.5.0` showed, fixed: builds now iterate until the checker is clean, every page moves a little, products without photographs are shown in photographs, palettes fit the trade, the copy gets a voice of its own, and nothing lies on anything else on a phone. The kit's own page models now pass the checker at 1440 and 390.

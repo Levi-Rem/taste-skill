@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Symlink taste-skill skills into agent skill directories.
+# Install taste-skill skills into agent skill directories.
 #
-# Unlike `npx skills add`, this links instead of copying, so `git pull`
-# updates every installed skill in place. Install names are read from each
-# SKILL.md frontmatter, so new upstream skills are picked up automatically.
+# Claude Code and Codex get symlinks. Unlike `npx skills add`, this means
+# `git pull` updates every installed skill in place. Install names are read
+# from each SKILL.md frontmatter, so new upstream skills are picked up
+# automatically. DSH gets a plain copy (see below).
 #
 #   ./install.sh                          # link all skills into Claude Code
 #   ./install.sh --codex                  # ... into Codex instead
@@ -12,7 +13,18 @@
 #   ./install.sh --list                   # show install name -> folder
 #   ./install.sh --uninstall              # remove links pointing at this repo
 #
-# Requires bash (arrays, [[ ]]). No other dependencies.
+# DeepSeek Harness (DSH) mode. DSH reads a plain folder, so this mode copies
+# instead of linking, through install.mjs (needs Node 18+):
+#
+#   ./install.sh --dsh                    # copy into $DSH_HOME/skills, else ~/.dsh/skills
+#   ./install.sh --dsh --project          # copy into <git root>/.dsh/skills
+#   ./install.sh --dsh --list             # show the DSH targets and their state
+#   ./install.sh --dsh --uninstall        # remove the copy this script made
+#
+# DSH flags: --user, --project, --target <dir>, --force. --dsh cannot be
+# combined with --claude, --codex or --all-agents: run them one at a time.
+#
+# Requires bash (arrays, [[ ]]). Node 18+ is needed only for --dsh.
 
 set -euo pipefail
 
@@ -32,12 +44,24 @@ SKILLS_DIR="$REPO/skills"
 targets=()
 mode=install
 wanted=()
+dsh=0
+dsh_level=
+dsh_target=
+dsh_force=0
+DSH_SKILL_NAME=design-taste-frontend
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --claude)      targets+=("$HOME/.claude/skills") ;;
     --codex)       targets+=("$HOME/.codex/skills") ;;
     --all-agents)  targets+=("$HOME/.claude/skills" "$HOME/.codex/skills") ;;
+    --dsh)         dsh=1 ;;
+    --user)        dsh_level=user ;;
+    --project)     dsh_level=project ;;
+    --target)
+      [[ $# -ge 2 && -n "$2" && "$2" != -* ]] || { echo "--target needs a folder" >&2; exit 2; }
+      dsh_target="$2"; shift ;;
+    --force)       dsh_force=1 ;;
     --list)        mode=list ;;
     --uninstall)   mode=uninstall ;;
     -h|--help)     awk 'NR>1 { if ($0 !~ /^#/) exit; sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"; exit 0 ;;
@@ -46,6 +70,39 @@ while [[ $# -gt 0 ]]; do
   esac
   shift
 done
+
+if [[ $dsh -ne 1 ]]; then
+  if [[ -n $dsh_level || -n $dsh_target || $dsh_force -eq 1 ]]; then
+    echo "--user, --project, --target and --force apply to --dsh; add --dsh (or use --claude / --codex)" >&2
+    echo "for a Claude Code project install, run: ./install.sh --claude   (user level is the default)" >&2
+    exit 2
+  fi
+fi
+
+# DSH mode delegates to install.mjs, the one implementation of DSH's target
+# rules (DSH_HOME, git root) and of the atomic copy + marker uninstall. Linking
+# would be wrong there: DSH reads the skill as a plain folder.
+if [[ $dsh -eq 1 ]]; then
+  if [[ ${#targets[@]} -gt 0 ]]; then
+    echo "--dsh cannot be combined with --claude, --codex or --all-agents: run them separately" >&2
+    exit 2
+  fi
+  for w in "${wanted[@]:-}"; do
+    [[ -z $w ]] && continue
+    if [[ $w != "$DSH_SKILL_NAME" ]]; then
+      echo "error: no skill named '$w' in DSH mode (installs as $DSH_SKILL_NAME)" >&2
+      exit 1
+    fi
+  done
+  command -v node >/dev/null 2>&1 || { echo "error: --dsh needs Node.js 18+ (install.mjs is not runnable otherwise)" >&2; exit 1; }
+  pass=(--dsh)
+  [[ -n $dsh_level ]] && pass+=("--$dsh_level")
+  [[ -n $dsh_target ]] && pass+=(--target "$dsh_target")
+  [[ $dsh_force -eq 1 ]] && pass+=(--force)
+  [[ $mode == uninstall ]] && pass+=(--uninstall)
+  [[ $mode == list ]] && pass+=(--list)
+  exec node "$REPO/install.mjs" "${pass[@]}"
+fi
 
 [[ ${#targets[@]} -eq 0 ]] && targets=("$HOME/.claude/skills")
 

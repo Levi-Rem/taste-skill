@@ -1,16 +1,12 @@
 ---
 name: design-taste-frontend
 description: >-
-  tasteskill 2.5.1, the anti-slop frontend skill. Builds professional company websites at the level
-  of figma.com and x.ai: plain copy in a voice of its own, one system, one section per screen,
-  equal edges, real photographs and real product UI (licensed stand-in photographs when the client
-  has none; a product render only when the brief asks for 3D), a hero entrance and one or two dealt
-  moments on every page, shader effects and scenes only on tech, gaming and software pages, quiet
-  micro-interactions, and a checker and finish gate that enforce it in a real browser. Use this
-  whenever you build, design, redesign, restyle, polish or review a landing page, company,
-  product, shop, cafe, hotel, studio, SaaS, AI, developer-tool or game site, as static HTML/CSS or
-  inside an existing React, Next.js, Vue, Svelte, Astro or Tailwind project, or when the user says
-  a page looks generic, templated or "AI-made".
+  tasteskill 2.5.1, the anti-slop frontend skill. Builds websites; use when you build, redesign,
+  restyle, polish or review a landing page or company site: SaaS, AI, developer tool, product,
+  shop, cafe, hotel, studio or game. Fixes pages that look generic, templated or AI-made. One
+  design system, one section per screen, plain copy, real photos, product UI, a hero entrance and
+  dealt moments, with a browser checker and finish gate. Works in HTML/CSS, React, Next.js, Vue,
+  Svelte, Astro or Tailwind.
 hooks:
   Stop:
     - hooks:
@@ -25,7 +21,24 @@ Build the website a good company would ship: it says plainly what is sold, shows
 every screen, and looks made for this client, not from a template and not like an art piece.
 figma.com and x.ai are the bar (in words: `layout-v4.md` section 1).
 
-`<skill>` is this folder. It needs Node 22+ and Chrome, Edge or Chromium (ffmpeg optional).
+`<skill>` is this folder. It needs Node 22+ and Chrome, Edge or Chromium (ffmpeg optional). On DSH the
+skill tool result prints `Base directory for this skill: <path>`, and that path is `<skill>`.
+
+## DSH
+
+This skill lives in the folder `design-taste-frontend` at `$DSH_HOME/skills/design-taste-frontend/`
+(default `~/.dsh/skills/design-taste-frontend/`, user level) or at
+`<git root>/.dsh/skills/design-taste-frontend/` (project level). DeepSeek Harness loads it through the
+skill catalog (the `skill` tool) or when you type `/design-taste-frontend`.
+
+DSH has no stop hook, so after your last fix run the gate by hand and fix what it lists:
+
+```bash
+node <skill>/scripts/gate.mjs <page>
+```
+
+The `hooks:` key in this file's frontmatter and the hook chapter in `references/gate.md` are for Claude
+Code and Codex; DSH's skill loader ignores that key and has no hook.
 
 ## House rules
 
@@ -276,8 +289,9 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    ```
 
    Fix what it lists and run it again until its last line is `GATE: PASS` or `GATE: OPEN`, three
-   rounds at most (in Claude Code it also runs when you finish; a stop before your first gate run is
-   no round, and to ask the user something after a block, just stop again). When the user tells you
+   rounds at most (where a Stop hook is configured, Claude Code and Codex also run it when you finish;
+   a stop before your first gate run is no round, and to ask the user something after a block, just
+   stop again). When the user tells you
    to stop, or to ship the page as it is, run `gate.mjs --done "<what they said>"` (`GATE: DONE`)
    and report the open FAILs.
    `GATE: SETUP` (no page yet, a framework's source shell, a page that is not local): arm what a

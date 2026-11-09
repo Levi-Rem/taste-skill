@@ -112,6 +112,32 @@ Start a new Codex session afterwards so the skill is loaded.
 </details>
 
 <details>
+<summary>DeepSeek Harness (DSH)</summary>
+
+DSH scans skill roots one level deep. Install the skill into one of them:
+
+- **User level** (every project): `$DSH_HOME/skills/design-taste-frontend/`, which is
+  `~/.dsh/skills/design-taste-frontend/` when `DSH_HOME` is unset.
+- **Project level** (one repository): `<git root>/.dsh/skills/design-taste-frontend/`.
+
+From a clone, `node install.mjs --dsh` installs at user level and `node install.mjs --dsh --project` at
+project level; `./install.sh --dsh` does the same (it copies through `install.mjs`). Or copy the folder
+by hand:
+
+```bash
+mkdir -p ~/.dsh/skills
+cp -R skills/taste-skill ~/.dsh/skills/design-taste-frontend
+```
+
+DSH lists the skill in its catalog, so ask the agent for a landing page or invoke it directly as
+`/design-taste-frontend`. No restart is needed (the body is re-read on every load); refresh the skill
+list if the new entry is not shown yet. DSH has no stop hook: run the finishing gate yourself with
+`node <skill>/scripts/gate.mjs <page>`. Discovery rules, the load result, differences and
+troubleshooting are in [DSH.md](DSH.md).
+
+</details>
+
+<details>
 <summary>From a clone, linked instead of copied</summary>
 
 `./install.sh` symlinks the skill into Claude Code (`--codex` for Codex, `--all-agents` for both), so a `git pull` updates it in place. On Windows (Git Bash) it makes a real link, or a directory junction when symlinks are not allowed, and it reports an older copied folder instead of skipping it silently.
@@ -143,7 +169,7 @@ Everything is a plain Node 22+ script in the skill folder; none installs anythin
 | `scripts/photos.mjs` | Deals vetted photographs by trade, enforces image weight and writes the one footer credit line. |
 | `scripts/icons.mjs` | Resolves real brand and interface icons into local SVG files. |
 | `scripts/effects.mjs`, `scripts/moments.mjs` | Deal shader grounds for tech, gaming and software pages, and the moments for every kind. |
-| `scripts/gate.mjs`, `scripts/copy-lint.mjs` | The finish gate (also a Stop hook) and the copy linter it runs. |
+| `scripts/gate.mjs`, `scripts/copy-lint.mjs` | The finish gate (also a Stop hook in Claude Code; Codex needs the `.codex/hooks.json` entry in `references/gate.md`) and the copy linter it runs. |
 | `scripts/consistency.mjs` | The checker: renders the page in headless Chrome over HTTP at `1440`, `1024`, `820`, `768` and `390` and prints PASS, WARN or FAIL per rule. |
 | `scripts/perf.mjs`, `scripts/shoot.mjs` | Page weight and speed, and full-page and per-section screenshots. |
 

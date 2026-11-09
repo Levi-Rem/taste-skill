@@ -1,0 +1,15 @@
+{
+  "name": "taste-skill",
+  "version": "2.5.1",
+  "private": true,
+  "description": "Design taste skill for coding agents, installable in DeepSeek Harness, Claude Code and Codex.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node tests/text-encoding.mjs && node tests/dsh-compat.mjs",
+    "test:full": "node tests/frontmatter.mjs && node tests/text-encoding.mjs && node tests/dsh-compat.mjs",
+    "install:dsh": "node install.mjs --dsh"
+  }
+}

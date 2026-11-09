@@ -3,3 +3,7 @@
 node_modules/
 .DS_Store
 Thumbs.db
+
+# DSH project installs (`node install.mjs --project`) and the install marker
+.dsh/
+.design-taste-frontend.install.json

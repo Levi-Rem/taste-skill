@@ -133,6 +133,9 @@ waiver, the first WARNs. `--quick` (the checker at 1440 and 390, the layout chec
 
 ## As a hook
 
+**DSH has no skill hooks, so this chapter does not apply there:** run the gate by hand (`SKILL.md`,
+`## DSH`). DSH's loader ignores the `hooks:` frontmatter key, so the block below costs nothing there.
+
 In Claude Code the skill's own frontmatter adds the gate as a Stop hook once the skill is invoked. The
 command is one POSIX `sh` line (Git Bash on Windows, `sh` on macOS and Linux) that runs the first
 `gate.mjs` it finds, in this order: `$CLAUDE_SKILL_DIR/scripts/`, `$CLAUDE_PLUGIN_ROOT/scripts/` and
